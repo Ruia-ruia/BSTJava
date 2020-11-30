@@ -195,6 +195,7 @@ public class BST<K extends Comparable, V> implements Iterable<Node<K, V>> {
         isBST.put(6, "six");
         isBST.put(4, "four");
         isBST.put(5, "five");
+        isBST.put(3, "three");
         
         System.out.println(isBST.get(4));
         System.out.println(isBST.get(8));
@@ -202,16 +203,17 @@ public class BST<K extends Comparable, V> implements Iterable<Node<K, V>> {
         System.out.println(isBST.get(7));
         System.out.println(isBST.get(6));
         System.out.println(isBST.get(5));
+        System.out.println(isBST.get(3));
         System.out.println("-------");
         isBST.remove(7);
         isBST.remove(8);
         isBST.remove(4);
-        isBST.remove(9);
         System.out.println(isBST.get(4));
         System.out.println(isBST.get(8));
         System.out.println(isBST.get(9));
         System.out.println(isBST.get(7));
         System.out.println(isBST.get(6));
         System.out.println(isBST.get(5));
+        System.out.println(isBST.get(3));
     }
 }
