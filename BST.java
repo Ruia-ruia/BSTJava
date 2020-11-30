@@ -1,16 +1,52 @@
 import java.util.Iterator;
+import java.util.List;
+import java.util.ArrayList; 
+import java.util.NoSuchElementException;
 
 public class BST<K extends Comparable, V> implements Iterable<Node<K, V>> {
+
+    public Iterator<Node<K, V>> iterator() {
+        return new BSTIterator(this.root);
+    }
+
+    class BSTIterator implements Iterator<Node<K, V>> {
+        List<Node<K, V>> nodes;
+        int index;
+
+        @Override
+        public boolean hasNext() {
+            return this.index + 1 < this.nodes.size();
+        }
+        
+        @Override
+        public Node<K, V> next() {
+            if (this.index == this.nodes.size()) {
+                throw new NoSuchElementException();
+            }
+            return this.nodes.get(++this.index);
+        }
+
+        private void inorder(Node<K, V> root) {
+            if (root == null) {
+                return;
+            }
+            this.inorder(root.getLeft());
+            this.nodes.add(root);
+            this.inorder(root.getRight());
+        }
+
+        public BSTIterator(Node<K, V> root) {
+            this.nodes = new ArrayList<>();
+            this.index = -1;
+            this.inorder(root);
+        }
+    }
 
     private Node<K, V> root;
     private long size; 
 
     public BST() {
         root = null;
-    }
-
-    public Iterator<Node<K, V>> iterator() {
-        return null; 
     }
 
     private Node<K, V> findSpot(K key) {
@@ -186,6 +222,13 @@ public class BST<K extends Comparable, V> implements Iterable<Node<K, V>> {
         return this.size; 
     }
 
+    public void printAll() {
+        Iterator<Node<K, V>> iterBST = this.iterator();
+        while (iterBST.hasNext()) {
+            System.out.println(iterBST.next().getValue());
+        }
+    }
+
     public static void main(String[] args) {
         BST<Integer, String> isBST = new BST<Integer, String>();
 
@@ -197,23 +240,11 @@ public class BST<K extends Comparable, V> implements Iterable<Node<K, V>> {
         isBST.put(5, "five");
         isBST.put(3, "three");
         
-        System.out.println(isBST.get(4));
-        System.out.println(isBST.get(8));
-        System.out.println(isBST.get(9));
-        System.out.println(isBST.get(7));
-        System.out.println(isBST.get(6));
-        System.out.println(isBST.get(5));
-        System.out.println(isBST.get(3));
+        isBST.printAll();
         System.out.println("-------");
         isBST.remove(7);
         isBST.remove(8);
         isBST.remove(4);
-        System.out.println(isBST.get(4));
-        System.out.println(isBST.get(8));
-        System.out.println(isBST.get(9));
-        System.out.println(isBST.get(7));
-        System.out.println(isBST.get(6));
-        System.out.println(isBST.get(5));
-        System.out.println(isBST.get(3));
+        isBST.printAll();
     }
 }
