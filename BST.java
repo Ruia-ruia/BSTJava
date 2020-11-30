@@ -38,7 +38,7 @@ public class BST<K extends Comparable, V> implements Iterable<Node<K, V>> {
 
     private Node<K, V> findParent(K key) {
         if (root.getKey().equals(key)) {
-            return null; 
+            return root; 
         }
         Node<K, V> currNode = root;
         while (true) {
@@ -97,32 +97,44 @@ public class BST<K extends Comparable, V> implements Iterable<Node<K, V>> {
                 currParent.setRight(null);
             }
         } else if (currNode.getSize() == 1) {
+            System.out.println("In size 1 with: " + currNode.getKey());
             // copy child to the node 
             if (currNode.getLeft() != null) {
                 K leftKey = (K)currNode.getLeft().getKey();
                 V leftValue = (V)currNode.getLeft().getValue();
                 currNode.setKey(leftKey);
                 currNode.setValue(leftValue);
-                currNode.setLeft(currNode.getLeft().getLeft());
+                Node<K, V> leftNode = currNode.getLeft();
+                Node<K, V> rightNode = currNode.getLeft().getRight();
+                currNode.setLeft(leftNode);
+                currNode.setRight(rightNode);
+                
             } else {
                 K rightKey = (K)currNode.getRight().getKey();
                 V rightValue = (V)currNode.getRight().getValue();
                 currNode.setKey(rightKey);
                 currNode.setValue(rightValue);
-                currNode.setRight(currNode.getRight().getRight());
+                Node<K, V> rightNode = currNode.getRight();
+                Node<K, V> leftNode = currNode.getRight().getLeft();
+                currNode.setRight(rightNode);    
+                currNode.setLeft(leftNode);
             }
         } else if (currNode.getSize() == 2) {
+            System.out.println("In size 2 with: " + currNode.getKey());
             // two children
             Node<K, V> successNode = nodeSuccessor(currNode);
             Node<K, V> parentSuccessNode = findParent(successNode.getKey());
+            
             K sKey = (K)successNode.getKey();
             V sVal = (V)successNode.getValue();
+            
             currNode.setKey(sKey);
             currNode.setValue(sVal);
+
             if (parentSuccessNode.getLeft() == successNode) {
-                parentSuccessNode.setLeft(currNode.getLeft());
-            } else {
-                parentSuccessNode.setRight(currNode.getRight());
+                parentSuccessNode.setLeft(successNode.getLeft());
+            } else if (parentSuccessNode.getRight() == successNode) {
+                parentSuccessNode.setRight(successNode.getRight());
             }
         }
         return null;
@@ -189,13 +201,17 @@ public class BST<K extends Comparable, V> implements Iterable<Node<K, V>> {
         System.out.println(isBST.get(9));
         System.out.println(isBST.get(7));
         System.out.println(isBST.get(6));
+        System.out.println(isBST.get(5));
         System.out.println("-------");
-        isBST.remove(6);
+        isBST.remove(7);
         isBST.remove(8);
+        isBST.remove(4);
+        isBST.remove(9);
         System.out.println(isBST.get(4));
         System.out.println(isBST.get(8));
         System.out.println(isBST.get(9));
         System.out.println(isBST.get(7));
         System.out.println(isBST.get(6));
+        System.out.println(isBST.get(5));
     }
 }
